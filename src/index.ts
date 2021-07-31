@@ -1,8 +1,11 @@
 import express from 'express';
 import csv from 'csvtojson';
+import apiRoutes from './routes/api/index';
 
 const app = express();
 const port = 3000;
+
+app.use('/api', apiRoutes);
 
 async function process(file:string){
     const json = await csv().fromFile(file);
@@ -18,20 +21,6 @@ app.get('/users', async (req, res)=>{
     const out = await process(__dirname + '/../users.csv');
     res.send(out);
 });
-
-// start the Express server
-app.listen(port, () => {
-    console.log(`server started at http://localhost:${port}`);
-});
-
-
-import express from 'express';
-import apiRoutes from './routes/api/index';
-
-const app = express();
-const port = 3000;
-
-app.use('/api', apiRoutes);
 
 // start the Express server
 app.listen(port, () => {
