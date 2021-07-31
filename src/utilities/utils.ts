@@ -19,9 +19,12 @@ export class Resizer{
         if (!this.inputDir || !this.outputDir) {
             throw new Error("wrong config");
         }
-        return sharp(this.inputDir + "/" + this.filename)
+        const path = __dirname + "/" + this.inputDir + "/" + this.filename + ".jpg";
+        const outPath = __dirname + "/" + this.outputDir + "/" + this.filename + "OUT.jpg";
+        console.log(path);
+        return sharp(path)
             .resize(this.width, this.height)
-            .toFile(this.outputDir + "/'output.jpg");
+            .toFile(outPath);
     }
 
     public setOutputDir(outputDir:string){

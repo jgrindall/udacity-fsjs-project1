@@ -17,8 +17,8 @@ export default express.Router()
             const height: string = req.query.height as string;
 
             const resizer = new Resizer(filename, parseInt(width), parseInt(height));
-            resizer.setInputDir(__dirname + "../../../assets");
-            resizer.setOutputDir(__dirname + "../../../assets/out");
+            resizer.setInputDir("../../assets");
+            resizer.setOutputDir("../../assets/out");
             try {
                 resizer
                     .process()
