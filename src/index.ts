@@ -26,3 +26,14 @@ app.get('/users', async (req, res)=>{
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
 });
+
+
+/**
+ - example URL api/images?filename=argentina&width=200&height=200
+ - should be usable as an img src
+ - example folder structure:
+    - assets/full
+    - assets/thumbs
+ */
+
+
