@@ -1,25 +1,35 @@
-import express from 'express';
-import csv from 'csvtojson';
+import sharp from "sharp";
 
-const app = express();
-const port = 3000;
+export class Resizer{
 
-async function process(file:string){
-    const json = await csv().fromFile(file);
-    json.forEach(item=>{
-        item.phone = item.phone || 'missing data';
-    });
-    console.log(json);
-    return JSON.stringify(json);
+    private filename:string;
+    private width:number;
+    private height:number;
+
+    private inputDir:string = "";
+    private outputDir:string = "";
+
+    constructor(filename:string, width:number, height:number){
+        this.filename = filename;
+        this.width = width;
+        this.height = height;
+    }
+
+    async process() {
+        if (!this.inputDir || !this.outputDir) {
+            throw new Error("wrong config");
+        }
+        return sharp(this.inputDir + "/" + this.filename)
+            .resize(this.width, this.height)
+            .toFile(this.outputDir + "/'output.jpg");
+    }
+
+    public setOutputDir(outputDir:string){
+        this.outputDir = outputDir;
+    }
+
+    public setInputDir(inputDir:string){
+        this.inputDir = inputDir;
+    }
+
 }
-
-app.get('/users', async (req, res)=>{
-    console.log(__dirname);
-    const out = await process(__dirname + '/../users.csv');
-    res.send(out);
-});
-
-// start the Express server
-app.listen(port, () => {
-    console.log(`server started at http://localhost:${port}`);
-});
