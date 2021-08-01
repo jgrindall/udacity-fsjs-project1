@@ -1,9 +1,10 @@
-import rimraf from "rimraf";
 import {promises as fsPromises} from "fs";
-import fs from "fs";
 import sizeOf from "buffer-image-size";
 import Resizer from "../../utilities/Resizer";
+import mkdirp from 'mkdirp';
+import {dirOrFileExists, emptyDirectory, removeDirectory} from "../../utilities/FileUtils";
 const appRoot = require('app-root-path');
+
 const inputPath = appRoot + "/temp/";
 const outputPath = appRoot + "/temp/out/";
 
@@ -12,163 +13,126 @@ const base64Data = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsL
 
 /////////  before all
 
-async function removeDirectory(dir:string, filesOnly:boolean = false):Promise<void>{
-    const path = filesOnly ? dir + "*.*" : dir;
-    console.log('clear '+ path);
-    return new Promise(resolve => {
-        fsPromises.access(dir, fs.constants.F_OK)
-            .then(async () => {
-                await rimraf(path, {maxBusyTries: 100}, ()=>{console.log('FAIL:' + path);})
-                resolve();
-            })
-            .catch(() => {
-                console.log('no output directory ' + path);
-                resolve();
-            });
+async function removeDirs():Promise<any>{
+    return removeDirectory(outputPath).then(() => {
+        return removeDirectory(inputPath);
     });
 }
 
-async function removeDirs():Promise<void>{
-    await removeDirectory(outputPath);
-    return removeDirectory(inputPath);
+async function createDirs():Promise<any> {
+    return mkdirp(inputPath).then(() => {
+        return mkdirp(outputPath);
+    });
 }
 
-async function createDirs():Promise<void>{
-    // remove the input and output folders
-    console.log('make 1', inputPath);
-    return fsPromises.mkdir(inputPath).then(()=>{
-        console.log('make 2', outputPath);
-        return fsPromises.mkdir(outputPath);
-    });
+async function addTestImage():Promise<any>{
+    const buffer = Buffer.from(base64Data, 'base64').toString('binary');
+    return fsPromises.writeFile(inputPath + "in.jpg", buffer, "binary");
 }
 
 describe("test it resizes an image and returns the relevant buffer", () => {
 
-    beforeAll((done)=>{
-        removeDirs().then(()=>{
-            createDirs()
-                .then(()=>{
-                    const buffer = Buffer.from(base64Data, 'base64').toString('binary');
-                    return fsPromises.writeFile(inputPath + "in.jpg", buffer, "binary");
-                })
-                .then(done);
+    beforeAll( ()=>{
+        return removeDirs()
+            .then(createDirs)
+            .then(addTestImage)
+            .catch(e=>{
+                console.log('e', e);
+            })
+    });
+
+    afterAll(()=>{
+        return removeDirs()
+            .then(()=>{
+                return true;
         });
     });
 
-    afterAll((done)=>{
-        //removeDirs().then(done);
+    afterEach(() => {
+        return emptyDirectory(outputPath);
     });
 
-
-    /////////  after each
-
-    afterEach((done) => {
-        //removeDirectory(outputPath, true)
-           // .then(done);
-    });
-
-
-    it('test getResizedImage works and returns a buffer of the right size', (done) => {
-        expect(1).toEqual(1);
-        done();
-    });
-});
-
-
-/*
-describe("test it resizes an image and returns the relevant buffer", () => {
-
-    it('test getResizedImage works and returns a buffer of the right size',  (done) => {
+    it('test getResizedImage works and returns a buffer of the right size',  () => {
         const resizer = new Resizer(inputPath, outputPath);
-        resizer
+        return resizer
             .getResizedImage("in.jpg", 100, 100)
             .then((data: Buffer) => {
                 expect(data).toBeTruthy();
                 const dimensions = sizeOf(data);
                 expect(dimensions.width).toEqual(100);
                 expect(dimensions.height).toEqual(100);
-                done();
             });
     });
 
-   it('test getResizedImage works when called twice', (done) => {
-       const resizer = new Resizer(inputPath, outputPath);
-       resizer
-           .getResizedImage("in.jpg", 100, 100)
-           .then((data: Buffer) => {
-               expect(data).toBeTruthy();
-               const dimensions = sizeOf(data);
-               expect(dimensions.width).toEqual(100);
-               expect(dimensions.height).toEqual(100);
-               done();
-           });
-    });
-
-    it('test getResizedImage throws an error when called on an image that does not exist', (done) => {
+    it('test getResizedImage throws an error when called on an image that does not exist', () => {
         const resizer = new Resizer(inputPath, outputPath);
-        resizer
+        return resizer
             .getResizedImage("doesnotexist.jpg", 150, 150)
             .then(()=>{
                 fail();
             })
             .catch((e:Error)=>{
-                console.log(e.message);
-                console.log(typeof e);
-                expect(e.message).toEqual("Error: Input file is missing");
-                done();
+                expect(e.message).toEqual("Input file is missing");
             });
-    });*/
+    });
 
-    /*it('test getResizedImage throws an error when called on an image that does not exist', (done) => {
+    it('test getResizedImage throws an error when called on an image in a folder that does not exist', () => {
         const resizer = new Resizer(inputPath + "/subfolderdoesnotexist/", outputPath);
-        resizer
-            .getResizedImage("doesnotexist.jpg", 150, 150)
+        return resizer
+            .getResizedImage("in.jpg", 150, 150)
             .then(()=>{
                 fail();
             })
             .catch((e:any)=>{
-                console.log(e);
-                expect(e).toEqual(1);
-                done();
+                expect(e.message).toEqual("Input file is missing");
             });
+    });
 
-        expect(resizer.getResizedImage("doesnotexist.jpg", 150, 150)).toThrow(new Error("Parsing is not possible"));
-    });*/
-
-
-/*
-
-describe("test it saves images correctly", () => {
-
-    it('test getResizedImage works and saves the output image', async (done) => {
+    it('test getResizedImage works and saves the output image in the right place', () => {
         const resizer = new Resizer(inputPath, outputPath);
-        resizer
+        return resizer
             .getResizedImage("in.jpg", 150, 150)
-            .then((data: Buffer) => {
-                const dimensions = sizeOf(data);
-                expect(dimensions.width).toEqual(150);
-                expect(dimensions.height).toEqual(150);
+            .then(async () => {
                 const newFilename = outputPath + "in@150x150.jpg";
-                return fsPromises.access(newFilename, fs.constants.F_OK)
-                    .then((arg) => {
-                        // file exists, load it
-                        expect(arg).toBeUndefined();
-                        fsPromises
-                            .readFile(newFilename)
-                            .then((data:Buffer)=>{
-                                const dimensions = sizeOf(data);
-                                expect(dimensions.width).toEqual(150);
-                                expect(dimensions.height).toEqual(150);
-                        });
-                    })
-                    .catch(() => {
-                        fail("File does not exixt")
+                const exists = await dirOrFileExists(newFilename);
+                expect(exists).toEqual(true);
+                return fsPromises
+                    .readFile(newFilename)
+                    .then((data:Buffer)=>{
+                        const dimensions = sizeOf(data);
+                        expect(dimensions.width).toEqual(150);
+                        expect(dimensions.height).toEqual(150);
                     });
             });
     });
-});
 
-*/
+    it('test getResizedImage caches correctly',  () => {
+        const resizer = new Resizer(inputPath, outputPath);
+        spyOn(resizer, "resize").and.callThrough();
+        const resizeOnce = ()=>{
+            return resizer
+                .getResizedImage("in.jpg", 100, 100)
+                .then((data: Buffer) => {
+                    expect(data).toBeTruthy();
+                    const dimensions = sizeOf(data);
+                    expect(dimensions.width).toEqual(100);
+                    expect(dimensions.height).toEqual(100);
+                });
+        };
+        const newFilename = outputPath + "in@150x150.jpg";
+        return resizeOnce().then(()=>{
+            resizeOnce().then(async ()=>{
+                const exists = await dirOrFileExists(newFilename);
+                expect(exists).toEqual(true);
+                expect(resizer.resize).toHaveBeenCalled();
+                expect(resizer.resize).toHaveBeenCalledTimes(1);
+            });
+        })
+    });
+
+
+
+});
 
 
 
@@ -179,5 +143,3 @@ describe("test it saves images correctly", () => {
 //expect(resizerConfig.inputPath).toBe("apples");
 //expect(spy).toHaveBeenCalled();
 //spyOn(myApp, "reallyImporatantProcess");
-//var result = myApp.useFlagForSomething();
-//expect(myApp.reallyImporatantProcess).toHaveBeenCalled();

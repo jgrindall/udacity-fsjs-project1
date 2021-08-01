@@ -21,29 +21,28 @@ export default class Resizer{
     }
 
     /**
-     * process. If the file exists, return the Buffer as-is. Else, resize it and return.
+     * process. If the file exists, return the Buffer as-is. Else, resize it, save and return.
      */
     public async getResizedImage(filename:string, width:number, height:number):Promise<Buffer> {
         const output = this.outputDir + this.getName(filename, width, height);
-        console.log("check for", output);
         return fsPromises.access(output, fs.constants.F_OK)
             .then(() => {
                 // file exists
-                console.log("file exists", output);
                 return fsPromises.readFile(output);
             })
-            .catch(() => {
-                console.log("file does not exist", output);
-                return sharp(this.inputDir + filename)
-                    .resize(width, height)
-                    .toBuffer()
-                    .then(async (data:Buffer)=>{
-                        // write the file for next time and output it to the browser as well
-                        await fsPromises.writeFile(output, data);
-                        return data;
-                    });
+            .catch(async () => {
+                const data:Buffer = await this.resize(filename, width, height);
+                console.log('data', data);
+                await fsPromises.writeFile(output, data);
+                return data;
             });
     }
 
+    public async resize(filename:string, width:number, height:number):Promise<Buffer>{
+        console.log('resize', filename);
+        return sharp(this.inputDir + filename)
+            .resize(width, height)
+            .toBuffer();
+    }
 
 }
