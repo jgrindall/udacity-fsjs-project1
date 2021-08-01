@@ -1,7 +1,7 @@
 import sharp from "sharp";
 import {promises as fsPromises} from "fs";
 import fs from "fs";
-import {getExtension, getFilename} from "./FileUtils";
+import {getExtension, getFilename, dirOrFileExists} from "./FileUtils";
 
 export default class Resizer{
 
@@ -25,21 +25,18 @@ export default class Resizer{
      */
     public async getResizedImage(filename:string, width:number, height:number):Promise<Buffer> {
         const output = this.outputDir + this.getName(filename, width, height);
-        return fsPromises.access(output, fs.constants.F_OK)
-            .then(() => {
-                // file exists
-                return fsPromises.readFile(output);
-            })
-            .catch(async () => {
-                const data:Buffer = await this.resize(filename, width, height);
-                console.log('data', data);
-                await fsPromises.writeFile(output, data);
-                return data;
-            });
+        const exists = await dirOrFileExists(output);
+        if(exists){
+            return fsPromises.readFile(output);
+        }
+        else{
+            const data:Buffer = await this.resize(filename, width, height);
+            await fsPromises.writeFile(output, data);
+            return data;
+        }
     }
 
     public async resize(filename:string, width:number, height:number):Promise<Buffer>{
-        console.log('resize', filename);
         return sharp(this.inputDir + filename)
             .resize(width, height)
             .toBuffer();
