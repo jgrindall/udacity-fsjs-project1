@@ -9,7 +9,8 @@
         "jasmine": "jasmine",
         "build": "npx tsc",
         "test": "npm run build && npm run jasmine",
-        "eslint": "eslint src/**"
+        "eslint": "eslint src/**",
+        "tslint": "eslint ./src --ext .ts"
     },
     "author": "jgrindall",
     "license": "ISC",
@@ -24,6 +25,8 @@
         "@types/node": "^14.14.6",
         "@types/sharp": "0.28.5",
         "@types/supertest": "^2.0.11",
+        "@typescript-eslint/eslint-plugin": "^4.28.5",
+        "@typescript-eslint/parser": "^4.28.5",
         "eslint": "^7.31.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
@@ -35,6 +38,7 @@
         "typescript": "^4.0.5"
     },
     "dependencies": {
+        "@types/app-root-path": "^1.2.4",
         "@types/node": "^14.14.6",
         "@types/rimraf": "^3.0.1",
         "app-root-path": "^3.0.0",

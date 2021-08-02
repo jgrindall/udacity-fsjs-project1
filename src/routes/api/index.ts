@@ -1,7 +1,7 @@
 import express from 'express';
 import logger from '../middleware/logger';
 import validator from '../middleware/validator';
-import {Resizer, IResizeParams, IResizeOutput} from '../../utilities/Resizer';
+import {Resizer, IResizeOutput} from '../../utilities/Resizer';
 import resizerConfig from '../../utilities/ResizerConfig';
 import {validationResult} from "express-validator";
 

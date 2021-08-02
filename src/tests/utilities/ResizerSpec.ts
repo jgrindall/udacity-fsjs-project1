@@ -42,7 +42,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
             .then(()=>{
                 fail();
             })
-            .catch((e:any)=>{
+            .catch((e:Error)=>{
                 expect(e.message).toEqual("Input file is missing");
             });
     });

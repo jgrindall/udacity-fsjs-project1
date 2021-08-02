@@ -1,4 +1,4 @@
-const appRoot = require('app-root-path');
+import appRoot from "app-root-path";
 
 class ResizerConfig{
     get inputPath(){

@@ -2,7 +2,7 @@ import sharp from "sharp";
 import {promises as fsPromises} from "fs";
 import {getExtension, getFilename, dirOrFileExists} from "./FileUtils";
 
-export interface IResizeParams{
+interface IResizeParams{
     width:number;
     height:number;
 }
@@ -14,8 +14,8 @@ export interface IResizeOutput{
 
 export class Resizer{
 
-    private inputDir:string = "./";
-    private outputDir:string = "./";
+    private inputDir = "./";
+    private outputDir = "./";
 
     constructor(inputDir:string, outputDir:string){
         this.inputDir = inputDir;

@@ -1,5 +1,5 @@
 {
-    "root": true,
+    /*"root": true,
     "plugins": [
       "prettier"
     ],
@@ -14,10 +14,27 @@
       "prefer-const": "error"
     },
     "parserOptions": {
-      "ecmaVersion": 2017
+      "ecmaVersion": 2017,
+        "sourceType": "module",
+        "allowImportExportEverywhere": true
     },
     "env": {
       "node": true,
       "es6": true
-    }
+    }*/
+
+
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ]
+
 }
+
+
