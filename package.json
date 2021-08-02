@@ -5,10 +5,11 @@
     "main": "index.ts",
     "scripts": {
         "start": "nodemon src/index.ts",
+        "prod": "node dist/index",
         "jasmine": "jasmine",
         "build": "npx tsc",
         "test": "npm run build && npm run jasmine",
-        "eslint": "eslint index.js"
+        "eslint": "eslint src/**"
     },
     "author": "jgrindall",
     "license": "ISC",
