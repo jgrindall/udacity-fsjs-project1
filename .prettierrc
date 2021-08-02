@@ -2,40 +2,6 @@
 	"semi": true,
 	"trailingComma": "none",
 	"tabWidth": 4,
-	"object-curly-spacing": "never",
-	"space-after-keywords": "never",
-	"keyword-spacing": {
-		"before": false,
-		"after": false
-	},
-	"space-before-blocks": [
-		"error",
-		"never"
-	],
-	"space-in-brackets": "never",
-	"function-call-argument-newline": "never",
-	"key-spacing": 0,
-	"type-annotation-spacing": {
-		"before": false,
-		"after": false
-	},
-	"arrow-spacing": {
-		"before": false,
-		"after": false
-	},
-	"quotes": [
-		"double"
-	],
-	"max-len": [
-		"error",
-		200,
-		2,
-		{
-			"ignoreUrls": true,
-			"ignoreComments": false,
-			"ignoreRegExpLiterals": true,
-			"ignoreStrings": false,
-			"ignoreTemplateLiterals": false
-		}
-	]
+	"printWidth":120,
+	"bracketSpacing": false
 }
