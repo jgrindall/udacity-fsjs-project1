@@ -1,3 +1,7 @@
+/**
+ * contains configuration for the input and output paths
+ **/
+
 import appRoot from "app-root-path";
 
 class ResizerConfig{
