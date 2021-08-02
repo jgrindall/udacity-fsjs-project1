@@ -9,7 +9,6 @@
         "jasmine": "jasmine",
         "build": "npx tsc",
         "test": "npm run build && npm run jasmine",
-        "eslint": "eslint src/**",
         "tslint": "eslint ./src --ext .ts"
     },
     "author": "jgrindall",
