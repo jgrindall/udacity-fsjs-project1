@@ -1,7 +1,7 @@
 import fs, {promises as fsPromises} from "fs";
 
-function loop(n: number):void{
-    for(let i = 0; i < 10; i++){
+function loop(n: number): void{
+    for(let i = 0; i < n; i++){
         console.log(i);
     }
 }
