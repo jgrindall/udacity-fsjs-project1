@@ -1,3 +1,8 @@
+/**
+ * cached image resizing.
+ **/
+
+
 import sharp from "sharp";
 import {promises as fsPromises} from "fs";
 import {getExtension, getFilename, dirOrFileExists} from "./FileUtils";
@@ -30,12 +35,14 @@ export class Resizer{
     }
 
     /**
-     * process. If the file exists, return the Buffer as-is. Else, resize it, save and return.
+     * Process. If the file exists, return the Buffer as-is. Else, resize it, save and return.
+     * @return Promise<IResizeOutput>
      */
     public async getResizedImage(filename:string, params:IResizeParams):Promise<IResizeOutput> {
         const output = this.outputDir + this.getName(filename, params.width, params.height);
         const exists = await dirOrFileExists(output);
         if(exists){
+            // just get the data and return with fromCache: true
             const data:Buffer = await fsPromises.readFile(output);
             return {
                 fromCache: true,
@@ -43,6 +50,7 @@ export class Resizer{
             };
         }
         else{
+            // resize the input file, save it and return with fromCache: false
             const data:Buffer = await this.resize(filename, params.width, params.height);
             await fsPromises.writeFile(output, data);
             return {
@@ -52,7 +60,7 @@ export class Resizer{
         }
     }
 
-    public async resize(filename:string, width:number, height:number):Promise<Buffer>{
+    private async resize(filename:string, width:number, height:number):Promise<Buffer>{
         return sharp(this.inputDir + filename)
             .resize(width, height)
             .toBuffer();

@@ -67,7 +67,9 @@ describe("test it resizes an image and returns the relevant buffer", () => {
 
     it('test getResizedImage caches correctly',  () => {
         const resizer = new Resizer(inputPath, outputPath);
-        spyOn(resizer, "resize").and.callThrough();
+        /*eslint-disable */
+        spyOn<any>(resizer, "resize").and.callThrough();
+        /*eslint-enable */
         const resizeOnce = (expectCache:boolean)=>{
             return resizer
                 .getResizedImage(fileName + ".jpg", {width:100, height:100})
@@ -87,8 +89,8 @@ describe("test it resizes an image and returns the relevant buffer", () => {
                 return resizeOnce(true).then(()=>{
                     return dirOrFileExists(newFilename).then((tf)=>{
                         expect(tf).toEqual(true);
-                        expect(resizer.resize).toHaveBeenCalled();
-                        expect(resizer.resize).toHaveBeenCalledTimes(1); // not 3
+                        expect(resizer['resize']).toHaveBeenCalled();
+                        expect(resizer['resize']).toHaveBeenCalledTimes(1); // not 3
                     });
                 });
             });
