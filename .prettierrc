@@ -1,10 +1,11 @@
 {
   "semi": true,
   "trailingComma": "none",
-  "printWidth": 80,
   "tabWidth": 4,
   'object-curly-spacing': "never",
   "space-after-keywords":"never",
+  keyword-spacing: ["error", { "before": false, after:false }],
+  space-before-blocks: ["error", "never"],
   "space-in-brackets":"never",
   "key-spacing": 0,
    "type-annotation-spacing": {
