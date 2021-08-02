@@ -1,9 +1,18 @@
 import sharp from "sharp";
 import {promises as fsPromises} from "fs";
-import fs from "fs";
 import {getExtension, getFilename, dirOrFileExists} from "./FileUtils";
 
-export default class Resizer{
+export interface IResizeParams{
+    width:number;
+    height:number;
+}
+
+export interface IResizeOutput{
+   data:Buffer;
+   fromCache:boolean;
+}
+
+export class Resizer{
 
     private inputDir:string = "./";
     private outputDir:string = "./";
@@ -23,16 +32,23 @@ export default class Resizer{
     /**
      * process. If the file exists, return the Buffer as-is. Else, resize it, save and return.
      */
-    public async getResizedImage(filename:string, width:number, height:number):Promise<Buffer> {
-        const output = this.outputDir + this.getName(filename, width, height);
+    public async getResizedImage(filename:string, params:IResizeParams):Promise<{data:Buffer, fromCache:boolean}> {
+        const output = this.outputDir + this.getName(filename, params.width, params.height);
         const exists = await dirOrFileExists(output);
         if(exists){
-            return fsPromises.readFile(output);
+            const data:Buffer = await fsPromises.readFile(output);
+            return {
+                fromCache: true,
+                data
+            };
         }
         else{
-            const data:Buffer = await this.resize(filename, width, height);
+            const data:Buffer = await this.resize(filename, params.width, params.height);
             await fsPromises.writeFile(output, data);
-            return data;
+            return {
+                fromCache: false,
+                data
+            };
         }
     }
 
