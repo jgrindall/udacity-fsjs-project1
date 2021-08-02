@@ -25,6 +25,7 @@ export default express.Router()
                 resizer
                     .getResizedImage(filename + ".jpg", {width, height})
                     .then((output:IResizeOutput) => {
+                        console.log("output", output);
                         return res
                             .type('image/jpg')
                             // 200 - ok

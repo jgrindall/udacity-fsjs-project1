@@ -2,20 +2,18 @@ import {promises as fsPromises} from "fs";
 import sizeOf from "buffer-image-size";
 import {Resizer, IResizeOutput} from "../../utilities/Resizer";
 import {dirOrFileExists} from "../../utilities/FileUtils";
-import {beforeAllHandler, afterAllHandler, afterEachHandler, inputPath, outputPath} from "../helpers/testutils";
+import {beforeAllHandler, afterAllHandler, afterEachHandler, inputPath, outputPath, fileName} from "../helpers/testutils";
 
 describe("test it resizes an image and returns the relevant buffer", () => {
 
     beforeAll(beforeAllHandler);
-
     afterAll(afterAllHandler);
-
     afterEach(afterEachHandler);
 
     it('test getResizedImage works and returns a buffer of the right size',  () => {
         const resizer = new Resizer(inputPath, outputPath);
         return resizer
-            .getResizedImage("image1.jpg", {width:100, height:100})
+            .getResizedImage(fileName + ".jpg", {width:100, height:100})
             .then((output: IResizeOutput) => {
                 expect(output.data).toBeTruthy();
                 expect(output.fromCache).toBeFalse();
@@ -40,7 +38,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
     it('test getResizedImage throws an error when called on an image in a folder that does not exist', () => {
         const resizer = new Resizer(inputPath + "/subfolderdoesnotexist/", outputPath);
         return resizer
-            .getResizedImage("image1.jpg", {width:100, height:100})
+            .getResizedImage(fileName + ".jpg", {width:100, height:100})
             .then(()=>{
                 fail();
             })
@@ -52,9 +50,9 @@ describe("test it resizes an image and returns the relevant buffer", () => {
     it('test getResizedImage works and saves the output image in the right place', () => {
         const resizer = new Resizer(inputPath, outputPath);
         return resizer
-            .getResizedImage("image1.jpg", {width:100, height:100})
+            .getResizedImage(fileName + ".jpg", {width:100, height:100})
             .then(async () => {
-                const newFilename = outputPath + "image1@100x100.jpg";
+                const newFilename = outputPath + fileName + "@100x100.jpg";
                 const exists = await dirOrFileExists(newFilename);
                 expect(exists).toEqual(true);
                 return fsPromises
@@ -72,7 +70,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
         spyOn(resizer, "resize").and.callThrough();
         const resizeOnce = (expectCache:boolean)=>{
             return resizer
-                .getResizedImage("image1.jpg", {width:100, height:100})
+                .getResizedImage(fileName + ".jpg", {width:100, height:100})
                 .then((output: IResizeOutput) => {
                     expect(output.data).toBeTruthy();
                     if(expectCache){
@@ -83,7 +81,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
                     }
                 });
         };
-        const newFilename = outputPath + "image1@100x100.jpg";
+        const newFilename = outputPath + fileName + "@100x100.jpg";
         return resizeOnce(false).then(()=>{
             return resizeOnce(true).then(()=>{
                 return resizeOnce(true).then(()=>{

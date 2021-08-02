@@ -32,9 +32,12 @@ export class Resizer{
     /**
      * process. If the file exists, return the Buffer as-is. Else, resize it, save and return.
      */
-    public async getResizedImage(filename:string, params:IResizeParams):Promise<{data:Buffer, fromCache:boolean}> {
+    public async getResizedImage(filename:string, params:IResizeParams):Promise<IResizeOutput> {
         const output = this.outputDir + this.getName(filename, params.width, params.height);
         const exists = await dirOrFileExists(output);
+
+        console.log("exists", exists);
+
         if(exists){
             const data:Buffer = await fsPromises.readFile(output);
             return {
