@@ -4,12 +4,13 @@
   "printWidth": 80,
   "tabWidth": 4,
   'object-curly-spacing': "never",
+  "space-after-keywords":"never",
+  "space-in-brackets":"never",
   "key-spacing": 0,
    "type-annotation-spacing": {
-   "before": false,
-   "after": false
-
+       "before": false,
+       "after": false
    },
-  quotes: [0]
+  quotes: ["double"]
 }
 

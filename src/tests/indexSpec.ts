@@ -1,22 +1,22 @@
 import resizerConfig from ".././utilities/ResizerConfig";
-import supertest from 'supertest';
-import app from '../index';
+import supertest from "supertest";
+import app from "../index";
 import sizeOf from "buffer-image-size";
 import {afterAllHandler, afterEachHandler, beforeAllHandler,  inputPath, outputPath, fileName} from "./helpers/testutils";
 const request = supertest(app);
 
-describe('Test endpoint success', async () => {
+describe("Test endpoint success", async () => {
 
     beforeAll(beforeAllHandler);
     afterAll(afterAllHandler);
     afterEach(afterEachHandler);
 
-    it('test file simplest example', async () => {
-        const spyIn = spyOnProperty(resizerConfig, 'inputPath', 'get').and.returnValue(inputPath);
-        const spyOut = spyOnProperty(resizerConfig, 'outputPath', 'get').and.returnValue(outputPath);
+    it("test file simplest example", async () => {
+        const spyIn = spyOnProperty(resizerConfig, "inputPath", "get").and.returnValue(inputPath);
+        const spyOut = spyOnProperty(resizerConfig, "outputPath", "get").and.returnValue(outputPath);
         expect(resizerConfig.inputPath).toBe(inputPath);
         expect(resizerConfig.outputPath).toBe(outputPath);
-        const response = await request.get('/api/images?filename=image1&width=100&height=100');
+        const response = await request.get("/api/images?filename=image1&width=100&height=100");
         expect(spyIn).toHaveBeenCalled();
         expect(spyOut).toHaveBeenCalled();
         expect(response.status).toBe(201);
@@ -24,32 +24,32 @@ describe('Test endpoint success', async () => {
         const dimensions = sizeOf(response.body as Buffer);
         expect(dimensions.width).toEqual(100);
         expect(dimensions.height).toEqual(100);
-        expect(response.headers["content-type"]).toEqual('image/jpg');
+        expect(response.headers["content-type"]).toEqual("image/jpg");
     });
 
 
-    it('test file simplest example', async () => {
-        const spyIn = spyOnProperty(resizerConfig, 'inputPath', 'get').and.returnValue(inputPath);
-        const spyOut = spyOnProperty(resizerConfig, 'outputPath', 'get').and.returnValue(outputPath);
-        const response = await request.get('/api/images?filename=image1&width=100&height=100');
+    it("test file simplest example", async () => {
+        const spyIn = spyOnProperty(resizerConfig, "inputPath", "get").and.returnValue(inputPath);
+        const spyOut = spyOnProperty(resizerConfig, "outputPath", "get").and.returnValue(outputPath);
+        const response = await request.get("/api/images?filename=image1&width=100&height=100");
         expect(response.status).toBe(201);
-        expect(response.headers["content-type"]).toEqual('image/jpg');
+        expect(response.headers["content-type"]).toEqual("image/jpg");
         const dimensions = sizeOf(response.body as Buffer);
         expect(dimensions.width).toEqual(100);
         expect(dimensions.height).toEqual(100);
         expect(spyIn).toHaveBeenCalled();
         expect(spyOut).toHaveBeenCalled();
 
-        const response2 = await request.get('/api/images?filename=image1&width=100&height=100');
+        const response2 = await request.get("/api/images?filename=image1&width=100&height=100");
         expect(response2.status).toBe(200);
-        expect(response2.headers["content-type"]).toEqual('image/jpg');
+        expect(response2.headers["content-type"]).toEqual("image/jpg");
         const dimensions2 = sizeOf(response2.body as Buffer);
         expect(dimensions2.width).toEqual(100);
         expect(dimensions2.height).toEqual(100);
 
-        const response3 = await request.get('/api/images?filename=image1&width=100&height=100');
+        const response3 = await request.get("/api/images?filename=image1&width=100&height=100");
         expect(response3.status).toBe(200);
-        expect(response3.headers["content-type"]).toEqual('image/jpg');
+        expect(response3.headers["content-type"]).toEqual("image/jpg");
         const dimensions3 = sizeOf(response3.body as Buffer);
         expect(dimensions3.width).toEqual(100);
         expect(dimensions3.height).toEqual(100);
@@ -60,29 +60,29 @@ describe('Test endpoint success', async () => {
 
 });
 
-describe('Test endpoint errors', () => {
+describe("Test endpoint errors", () => {
 
     beforeAll(beforeAllHandler);
     afterAll(afterAllHandler);
     afterEach(afterEachHandler);
 
-    it('test missing params - filename', async () => {
-            const response = await request.get('/api/images');
+    it("test missing params - filename", async () => {
+            const response = await request.get("/api/images");
             expect(response.statusCode).toBe(422);
             expect(response.text).toMatch(/filename error(.*)width error(.*)height error/);
         }
     );
 
-    it('test missing params - w/h', async () => {
-            const response = await request.get('/api/images?filename=' + fileName);
+    it("test missing params - w/h", async () => {
+            const response = await request.get("/api/images?filename=" + fileName);
             expect(response.status).toBe(422);
             expect(response.text).toMatch(/width error(.*)height error/);
             expect(response.text).not.toMatch(/filename error/);
         }
     );
 
-    it('test missing params - width/height', async () => {
-            const response = await request.get('/api/images?filename=' + fileName + '&width');
+    it("test missing params - width/height", async () => {
+            const response = await request.get("/api/images?filename=" + fileName + "&width");
             expect(response.status).toBe(422);
             expect(response.text).toMatch(/width error(.*)height error/);
             expect(response.text).not.toMatch(/filename error/);
@@ -90,8 +90,8 @@ describe('Test endpoint errors', () => {
         }
     );
 
-    it('test incorrect params - width 0', async () => {
-            const response = await request.get('/api/images?filename=' + fileName + '&width=0&height=1000');
+    it("test incorrect params - width 0", async () => {
+            const response = await request.get("/api/images?filename=" + fileName + "&width=0&height=1000");
             expect(response.status).toBe(422);
             expect(response.text).toMatch(/width error/);
             expect(response.text).not.toMatch(/filename error/);
@@ -99,8 +99,8 @@ describe('Test endpoint errors', () => {
         }
     );
 
-    it('test incorrect params - height too large', async () => {
-            const response = await request.get('/api/images?filename=' + fileName + '&width=10&height=3000');
+    it("test incorrect params - height too large", async () => {
+            const response = await request.get("/api/images?filename=" + fileName + "&width=10&height=3000");
             expect(response.status).toBe(422);
             expect(response.text).toMatch(/height error/);
             expect(response.text).not.toMatch(/filename error/);
@@ -108,12 +108,12 @@ describe('Test endpoint errors', () => {
         }
     );
 
-    it('test file does not exist', async () => {
+    it("test file does not exist", async () => {
 
-            const spy = spyOnProperty(resizerConfig, 'inputPath', 'get').and.returnValue(inputPath);
+            const spy = spyOnProperty(resizerConfig, "inputPath", "get").and.returnValue(inputPath);
             expect(resizerConfig.inputPath).toBe(inputPath);
 
-            const response = await request.get('/api/images?filename=image2&width=100&height=100');
+            const response = await request.get("/api/images?filename=image2&width=100&height=100");
             expect(response.status).toBe(500);
             expect(response.text).toMatch(/Input file is missing/);
             expect(response.text).not.toMatch(/height error/);

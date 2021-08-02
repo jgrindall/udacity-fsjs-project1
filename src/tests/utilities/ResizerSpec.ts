@@ -10,7 +10,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
     afterAll(afterAllHandler);
     afterEach(afterEachHandler);
 
-    it('test getResizedImage works and returns a buffer of the right size',  () => {
+    it("test getResizedImage works and returns a buffer of the right size",  () => {
         const resizer = new Resizer(inputPath, outputPath);
         return resizer
             .getResizedImage(fileName + ".jpg", {width:100, height:100})
@@ -23,7 +23,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
             });
     });
 
-    it('test getResizedImage throws an error when called on an image that does not exist', () => {
+    it("test getResizedImage throws an error when called on an image that does not exist", () => {
         const resizer = new Resizer(inputPath, outputPath);
         return resizer
             .getResizedImage("doesnotexist.jpg", {width:100, height:100})
@@ -35,7 +35,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
             });
     });
 
-    it('test getResizedImage throws an error when called on an image in a folder that does not exist', () => {
+    it("test getResizedImage throws an error when called on an image in a folder that does not exist", () => {
         const resizer = new Resizer(inputPath + "/subfolderdoesnotexist/", outputPath);
         return resizer
             .getResizedImage(fileName + ".jpg", {width:100, height:100})
@@ -47,7 +47,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
             });
     });
 
-    it('test getResizedImage works and saves the output image in the right place', () => {
+    it("test getResizedImage works and saves the output image in the right place", () => {
         const resizer = new Resizer(inputPath, outputPath);
         return resizer
             .getResizedImage(fileName + ".jpg", {width:100, height:100})
@@ -65,7 +65,7 @@ describe("test it resizes an image and returns the relevant buffer", () => {
             });
     });
 
-    it('test getResizedImage caches correctly',  () => {
+    it("test getResizedImage caches correctly",  () => {
         const resizer = new Resizer(inputPath, outputPath);
         /*eslint-disable */
         spyOn<any>(resizer, "resize").and.callThrough();
@@ -89,8 +89,8 @@ describe("test it resizes an image and returns the relevant buffer", () => {
                 return resizeOnce(true).then(()=>{
                     return dirOrFileExists(newFilename).then((tf)=>{
                         expect(tf).toEqual(true);
-                        expect(resizer['resize']).toHaveBeenCalled();
-                        expect(resizer['resize']).toHaveBeenCalledTimes(1); // not 3
+                        expect(resizer["resize"]).toHaveBeenCalled();
+                        expect(resizer["resize"]).toHaveBeenCalledTimes(1); // not 3
                     });
                 });
             });

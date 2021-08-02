@@ -7,13 +7,13 @@ const validatorOptions = {
 };
 
 const validator = [
-    query('filename')
+    query("filename")
         .notEmpty()
         .withMessage("filename error - filename cannot be empty"),
-    query('width')
+    query("width")
         .isInt(validatorOptions)
         .withMessage("width error - check your width is a whole number between 1 and 2048"),
-    query('height')
+    query("height")
         .isInt(validatorOptions)
         .withMessage("height error - check your height is a whole number between 1 and 2048")
 ];

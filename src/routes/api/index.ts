@@ -1,12 +1,12 @@
-import express from 'express';
-import logger from '../middleware/logger';
-import validator from '../middleware/validator';
-import {Resizer, IResizeOutput} from '../../utilities/Resizer';
-import resizerConfig from '../../utilities/ResizerConfig';
+import express from "express";
+import logger from "../middleware/logger";
+import validator from "../middleware/validator";
+import {Resizer, IResizeOutput} from "../../utilities/Resizer";
+import resizerConfig from "../../utilities/ResizerConfig";
 import {validationResult} from "express-validator";
 
 export default express.Router()
-    .get('/images', logger, validator, async (req: express.Request, res: express.Response) => {
+    .get("/images", logger, validator, async (req: express.Request, res: express.Response) => {
             // get errors from the validation
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -26,7 +26,7 @@ export default express.Router()
                     .getResizedImage(filename + ".jpg", {width, height})
                     .then((output:IResizeOutput) => {
                         return res
-                            .type('image/jpg')
+                            .type("image/jpg")
                             // 200 - ok
                             // 201 - resource created
                             .status(output.fromCache ? 200 : 201)
