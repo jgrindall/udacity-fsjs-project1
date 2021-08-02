@@ -17,12 +17,5 @@ jasmine.getEnv().addReporter({
             console.log('Suite ' + result.failedExpectations[i].message);
             console.log(result.failedExpectations[i].stack);
         }
-    },
-    jasmineDone: function(result:SpecResult) {
-        console.log('Finished suite: ' + result.overallStatus);
-        for(let i = 0; i < result.failedExpectations.length; i++) {
-            console.log('Global ' + result.failedExpectations[i].message);
-            console.log(result.failedExpectations[i].stack);
-        }
     }
 });
