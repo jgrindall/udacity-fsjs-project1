@@ -33,7 +33,7 @@ Example URLS to test in browser:
 API:
 ----
 
-/api/images:
+````/api/images:
     get:
         description: Gets a resized image
         parameters:
@@ -63,7 +63,7 @@ API:
                 description: Incorrect input
             500:
                 description: Error (file not found)
-                
+   
                 
                 
           
