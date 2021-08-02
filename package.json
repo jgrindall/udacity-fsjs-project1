@@ -9,7 +9,7 @@
         "jasmine": "jasmine",
         "build": "npx tsc",
         "test": "npm run build && npm run jasmine",
-        "tslint": "eslint ./src/eslinttest/index.ts --ext .ts --fix"
+        "tslint": "eslint ./src --ext .ts --fix"
     },
     "author": "jgrindall",
     "license": "ISC",
@@ -25,12 +25,9 @@
         "@typescript-eslint/eslint-plugin": "^4.28.5",
         "@typescript-eslint/parser": "^4.28.5",
         "eslint": "^7.31.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^3.4.0",
         "fs-extra": "^10.0.0",
         "mkdirp": "^1.0.4",
         "nodemon": "^2.0.6",
-        "prettier": "^1.19.1",
         "ts-node": "^9.0.0",
         "typescript": "^4.0.5"
     },

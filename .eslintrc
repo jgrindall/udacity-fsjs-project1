@@ -11,9 +11,7 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "plugin:prettier/recommended"
+        "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
         "object-curly-spacing": "off",
@@ -21,6 +19,9 @@
         "keyword-spacing": ["error", {
             "overrides": {
                 "if": {
+                    "after": false
+                },
+                "else": {
                     "after": false
                 },
                 "for": {
@@ -31,10 +32,7 @@
                 }
             }
         }],
-        "space-before-blocks": [
-            "error",
-            "never"
-        ],
+        "space-before-blocks": "off",
         "space-in-brackets": 0,
         "function-call-argument-newline": "off",
         "key-spacing": 0,
@@ -48,7 +46,7 @@
                 "ignoreUrls": true,
                 "ignoreComments": false,
                 "ignoreRegExpLiterals": true,
-                "ignoreStrings": false,
+                "ignoreStrings": true,
                 "ignoreTemplateLiterals": false
             }
         ]
