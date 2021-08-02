@@ -9,7 +9,7 @@ export default express.Router()
     .get("/images", logger, validator, async (req: express.Request, res: express.Response) => {
             // get errors from the validation
             const errors = validationResult(req);
-            if (!errors.isEmpty()) {
+            if(!errors.isEmpty()) {
                 return res
                     .status(422)
                     .send(errors.array().map(e => e.msg).join(","));
