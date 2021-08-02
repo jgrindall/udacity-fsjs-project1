@@ -1,7 +1,7 @@
 import express from 'express';
 import logger from '../middleware/logger';
 import validator from '../middleware/validator';
-import Resizer from '../../utilities/Resizer';
+import {Resizer, IResizeParams, IResizeOutput} from '../../utilities/Resizer';
 import resizerConfig from '../../utilities/ResizerConfig';
 import {validationResult} from "express-validator";
 
@@ -21,27 +21,24 @@ export default express.Router()
             const height: number = parseInt(req.query.height as string);
 
             try {
-                console.log('1');
                 const resizer = new Resizer(resizerConfig.inputPath, resizerConfig.outputPath);
                 resizer
-                    .getResizedImage(filename + ".jpg", width, height)
-                    .then((data) => {
+                    .getResizedImage(filename + ".jpg", {width, height})
+                    .then((output:IResizeOutput) => {
                         return res
                             .type('image/jpg')
-                            .status(200)
-                            .end(data);
+                            // 200 - ok
+                            // 201 - resource created
+                            .status(output.fromCache ? 200 : 201)
+                            .end(output.data);
                     })
                     .catch((e: Error) => {
-                        console.log(e, typeof e);
-                        console.log('2');
                         return res
                             .status(500)
                             .send(e.message);
                     })
             }
             catch (e) {
-                console.log('3');
-                console.log("error resizing");
                 return res
                     .status(500)
                     .send(e);
