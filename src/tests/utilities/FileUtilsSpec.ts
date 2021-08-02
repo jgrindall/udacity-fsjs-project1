@@ -1,7 +1,6 @@
 import {getExtension, getFilename} from "../../utilities/FileUtils";
 
 describe("test fileutils", () => {
-
     it("test getExtension", () => {
         expect(getExtension("a.jpg")).toEqual("jpg");
         expect(getExtension(" a .jpg")).toEqual("jpg");
@@ -17,5 +16,4 @@ describe("test fileutils", () => {
         expect(getFilename("a...jpg")).toEqual("a..");
         expect(getFilename(".test.jpg")).toEqual(".test");
     });
-
 });

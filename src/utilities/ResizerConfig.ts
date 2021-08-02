@@ -9,7 +9,7 @@ class ResizerConfig{
         return appRoot + "/assets/";
     }
     get outputPath(){
-        return appRoot + "/assets/out/"
+        return appRoot + "/assets/out/";
     }
 }
 
