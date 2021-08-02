@@ -2,10 +2,10 @@ const appRoot = require('app-root-path');
 
 class ResizerConfig{
     get inputPath(){
-        return appRoot + "/assets";
+        return appRoot + "/assets/";
     }
     get outputPath(){
-        return appRoot + "/assets/out"
+        return appRoot + "/assets/out/"
     }
 }
 
