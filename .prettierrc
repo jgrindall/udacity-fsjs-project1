@@ -1,6 +1,15 @@
 {
   "semi": true,
   "trailingComma": "none",
-  "singleQuote": true,
-  "printWidth": 80
+  "printWidth": 80,
+  "tabWidth": 4,
+  'object-curly-spacing': "never",
+  "key-spacing": 0,
+   "type-annotation-spacing": {
+   "before": false,
+   "after": false
+
+   },
+  quotes: [0]
 }
+
