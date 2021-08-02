@@ -33,36 +33,36 @@ Example URLS to test in browser:
 API:
 ----
 
-````/api/images:
-    get:
-        description: Gets a resized image
-        parameters:
-            filename:
-                required: true
-                type: string
-                description: The name of the image
-                in: query
-            width:
-                required: true
-                type: number in [1...2048]
-                description: The desired width
-                in: query
-            height:
-                required: true
-                type: number in [1...2048]
-                description: The desired height
-                in: query
-        produces:
-            image/jpg  
-        responses:
-            200:
-                description: OK (returned fron cache)
-            201:
-                description: OK (created new image)
-            422:
-                description: Incorrect input
-            500:
-                description: Error (file not found)
+    /api/images:
+        get:
+            description: Gets a resized image
+            parameters:
+                filename:
+                    required: true
+                    type: string
+                    description: The name of the image
+                    in: query
+                width:
+                    required: true
+                    type: number in [1...2048]
+                    description: The desired width
+                    in: query
+                height:
+                    required: true
+                    type: number in [1...2048]
+                    description: The desired height
+                    in: query
+            produces:
+                image/jpg  
+            responses:
+                200:
+                    description: OK (returned fron cache)
+                201:
+                    description: OK (created new image)
+                422:
+                    description: Incorrect input
+                500:
+                    description: Error (file not found)
    
                 
                 
