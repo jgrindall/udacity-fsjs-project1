@@ -87,21 +87,21 @@ Relevant Files:
 ----
 
 - Main application:
-    - <a href='/blob/master/src/routes/api/index.ts'>src/routes/api/index.ts</a>
-    - src/utilities/Resizer.ts
+               
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/routes/api/index.ts'>src/routes/api/index.ts</a>
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/utilities/Resizer.ts'>src/utilities/Resizer.ts</a>
  
 - Middleware:
-    - src\routes\middleware\logger.ts
-    - src\routes\middleware\validator.ts - validates query params using "express-validator"
-   
-- Tests:
-    - src/tests/indexSpec.ts - uses supertest for endpoint testing and caching
-    - src/tests/utilities/ResizerSpec.ts - tests sharp Resizing code and caching
-    - src/tests/utilities/FileUtilsSpec.ts - tests utils
+
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/routes/middleware/logger.ts'>src/routes/middleware/logger.ts</a>
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/routes/middleware/validator.ts'>src/routes/middleware/validator.ts</a>
     
-   
+- Tests:
 
-
-
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/tests/indexSpec.ts'>src/tests/indexSpec.ts</a>
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/tests/utilities/ResizerSpec.ts'>src/tests/utilities/ResizerSpec.ts</a>
+    - <a href='https://github.com/jgrindall/udacity-fsjs-project1/blob/master/src/tests/utilities/FileUtilsSpec.ts'>src/tests/utilities/FileUtilsSpec.ts</a>
+    
+    
 
 
