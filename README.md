@@ -55,14 +55,10 @@ API:
             produces:
                 image/jpg  
             responses:
-                200:
-                    description: OK (returned fron cache)
-                201:
-                    description: OK (created new image)
-                422:
-                    description: Incorrect input
-                500:
-                    description: Error (file not found)
+                200: description: OK (returned from cache)
+                201: description: OK (created new image)
+                422: description: Incorrect input
+                500: description: Error (file not found)
    
                 
                 
@@ -85,11 +81,13 @@ Notes:
 
 - I have removed prettier from the config - I am using only tslint. See git history for my prettier config. It does not play nicely with the coding standard I use (nor the one used by my team at work)
  
-Notable files for code review:
+ 
+ 
+Relevant Files:
 ----
 
 - Main application:
-    - src/routes/api/index.ts
+    - <a href='/blob/master/src/routes/api/index.ts'>src/routes/api/index.ts</a>
     - src/utilities/Resizer.ts
  
 - Middleware:
