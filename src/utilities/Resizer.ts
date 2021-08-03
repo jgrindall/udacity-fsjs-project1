@@ -2,12 +2,11 @@
  * cached image resizing.
  **/
 
-
 import sharp from "sharp";
 import {promises as fsPromises} from "fs";
 import {getExtension, getFilename, dirOrFileExists} from "./FileUtils";
 
-interface IResizeParams{
+export interface IResizeParams{
     width:number;
     height:number;
 }

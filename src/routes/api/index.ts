@@ -1,9 +1,12 @@
 import express from "express";
 import logger from "../middleware/logger";
 import validator from "../middleware/validator";
-import {Resizer, IResizeOutput} from "../../utilities/Resizer";
-import resizerConfig from "../../utilities/ResizerConfig";
+import ResizerFactory from "../../utilities/ResizerFactory";
 import {validationResult} from "express-validator";
+import appRoot from "app-root-path";
+
+const inputPath = appRoot + "/assets/";
+const outputPath = appRoot + "/assets/out/";
 
 export default express.Router()
     .get("/images", logger, validator, async (req: express.Request, res: express.Response) => {
@@ -21,10 +24,10 @@ export default express.Router()
             const height: number = parseInt(req.query.height as string);
 
             try {
-                const resizer = new Resizer(resizerConfig.inputPath, resizerConfig.outputPath);
+                const resizer = ResizerFactory.getResizer(inputPath, outputPath);
                 resizer
                     .getResizedImage(filename + ".jpg", {width, height})
-                    .then((output:IResizeOutput) => {
+                    .then(output => {
                         return res
                             .type("image/jpg")
                             // 200 - ok

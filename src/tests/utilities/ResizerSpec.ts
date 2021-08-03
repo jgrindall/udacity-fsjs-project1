@@ -98,4 +98,3 @@ describe("test it resizes an image and returns the relevant buffer", () => {
     });
 
 });
-

@@ -1,8 +1,10 @@
-import resizerConfig from ".././utilities/ResizerConfig";
+import ResizerFactory from ".././utilities/ResizerFactory";
 import supertest from "supertest";
 import app from "../index";
 import sizeOf from "buffer-image-size";
-import {afterAllHandler, afterEachHandler, beforeAllHandler,  inputPath, outputPath, fileName} from "./helpers/testutils";
+import {afterAllHandler, afterEachHandler, beforeAllHandler, inputPath, outputPath, fileName} from "./helpers/testutils";
+import {Resizer} from "../utilities/Resizer";
+
 const request = supertest(app);
 
 describe("Test endpoint success", async () => {
@@ -12,13 +14,9 @@ describe("Test endpoint success", async () => {
     afterEach(afterEachHandler);
 
     it("test file simplest example", async () => {
-        const spyIn = spyOnProperty(resizerConfig, "inputPath", "get").and.returnValue(inputPath);
-        const spyOut = spyOnProperty(resizerConfig, "outputPath", "get").and.returnValue(outputPath);
-        expect(resizerConfig.inputPath).toBe(inputPath);
-        expect(resizerConfig.outputPath).toBe(outputPath);
+        const spy = spyOn(ResizerFactory, "getResizer").and.returnValue(new Resizer(inputPath, outputPath));
         const response = await request.get("/api/images?filename=image1&width=100&height=100");
-        expect(spyIn).toHaveBeenCalled();
-        expect(spyOut).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
         expect(response.status).toBe(201);
         expect(response.body as Buffer).toBeTruthy();
         const dimensions = sizeOf(response.body as Buffer);
@@ -27,18 +25,15 @@ describe("Test endpoint success", async () => {
         expect(response.headers["content-type"]).toEqual("image/jpg");
     });
 
-
     it("test file simplest example", async () => {
-        const spyIn = spyOnProperty(resizerConfig, "inputPath", "get").and.returnValue(inputPath);
-        const spyOut = spyOnProperty(resizerConfig, "outputPath", "get").and.returnValue(outputPath);
+        const spy = spyOn(ResizerFactory, "getResizer").and.returnValue(new Resizer(inputPath, outputPath));
         const response = await request.get("/api/images?filename=image1&width=100&height=100");
         expect(response.status).toBe(201);
         expect(response.headers["content-type"]).toEqual("image/jpg");
         const dimensions = sizeOf(response.body as Buffer);
         expect(dimensions.width).toEqual(100);
         expect(dimensions.height).toEqual(100);
-        expect(spyIn).toHaveBeenCalled();
-        expect(spyOut).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
 
         const response2 = await request.get("/api/images?filename=image1&width=100&height=100");
         expect(response2.status).toBe(200);
@@ -54,9 +49,6 @@ describe("Test endpoint success", async () => {
         expect(dimensions3.width).toEqual(100);
         expect(dimensions3.height).toEqual(100);
     });
-
-
-
 
 });
 
@@ -109,10 +101,7 @@ describe("Test endpoint errors", () => {
     );
 
     it("test file does not exist", async () => {
-
-            const spy = spyOnProperty(resizerConfig, "inputPath", "get").and.returnValue(inputPath);
-            expect(resizerConfig.inputPath).toBe(inputPath);
-
+            const spy = spyOn(ResizerFactory, "getResizer").and.returnValue(new Resizer(inputPath, outputPath));
             const response = await request.get("/api/images?filename=image2&width=100&height=100");
             expect(response.status).toBe(500);
             expect(response.text).toMatch(/Input file is missing/);
