@@ -24,9 +24,8 @@ export async function dirOrFileExists(dir:string):Promise<boolean>{
 export async function removeDirectory(dir:string):Promise<void>{
     const exists = await dirOrFileExists(dir);
     if(exists){
-        return emptyDirectory(dir).then(()=>{
-            return fsPromises.rmdir(dir);
-        });
+        await emptyDirectory(dir);
+        return fsPromises.rmdir(dir);
     }
     else{
         return Promise.resolve();
