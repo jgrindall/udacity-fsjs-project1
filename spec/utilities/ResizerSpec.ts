@@ -1,7 +1,7 @@
 import {promises as fsPromises} from "fs";
 import sizeOf from "buffer-image-size";
-import {Resizer, IResizeOutput} from "../../utilities/Resizer";
-import {dirOrFileExists} from "../../utilities/FileUtils";
+import {Resizer, IResizeOutput} from "../../src/utilities/Resizer";
+import {dirOrFileExists} from "../../src/utilities/FileUtils";
 import {beforeAllHandler, afterAllHandler, afterEachHandler, inputPath, outputPath, fileName} from "../helpers/testutils";
 
 describe("test it resizes an image and returns the relevant buffer", () => {

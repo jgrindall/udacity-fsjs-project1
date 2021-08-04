@@ -1,9 +1,9 @@
-import ResizerFactory from ".././utilities/ResizerFactory";
+import ResizerFactory from "../src/utilities/ResizerFactory";
 import supertest from "supertest";
-import app from "../index";
+import app from "../src/index";
 import sizeOf from "buffer-image-size";
 import {afterAllHandler, afterEachHandler, beforeAllHandler, inputPath, outputPath, fileName} from "./helpers/testutils";
-import {Resizer} from "../utilities/Resizer";
+import {Resizer} from "../src/utilities/Resizer";
 
 const request = supertest(app);
 

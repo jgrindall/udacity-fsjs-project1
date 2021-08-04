@@ -6,9 +6,8 @@
     "scripts": {
         "start": "nodemon src/index.ts",
         "prod": "node dist/index",
-        "jasmine": "jasmine",
         "build": "npx tsc",
-        "test": "npm run build && npm run jasmine",
+        "test": "jasmine-ts --config=jasmine.json",
         "tslint": "eslint ./src --ext .ts --fix"
     },
     "author": "jgrindall",
@@ -39,6 +38,7 @@
         "express": "^4.17.1",
         "express-validator": "^6.12.1",
         "jasmine": "^3.6.4",
+        "jasmine-ts": "^0.4.0",
         "jasmine-spec-reporter": "^6.0.0",
         "sharp": "^0.28.3",
         "supertest": "^6.1.4",

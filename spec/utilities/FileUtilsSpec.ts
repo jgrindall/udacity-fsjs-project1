@@ -1,4 +1,4 @@
-import {getExtension, getFilename} from "../../utilities/FileUtils";
+import {getExtension, getFilename} from "../../src/utilities/FileUtils";
 
 describe("test fileutils", () => {
     it("test getExtension", () => {

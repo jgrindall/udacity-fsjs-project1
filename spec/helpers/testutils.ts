@@ -1,4 +1,4 @@
-import {emptyDirectory, removeDirectory} from "../../utilities/FileUtils";
+import {emptyDirectory, removeDirectory} from "../../src/utilities/FileUtils";
 import mkdirp from "mkdirp";
 import {promises as fsPromises} from "fs";
 import appRoot from "app-root-path";

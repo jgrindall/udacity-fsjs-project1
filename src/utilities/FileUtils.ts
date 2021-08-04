@@ -12,13 +12,13 @@ export const getFilename = (filename:string):string => {
 };
 
 export async function dirOrFileExists(dir:string):Promise<boolean>{
-    return fsPromises.access(dir, fs.constants.F_OK)
-        .then(() => {
-            return Promise.resolve(true);
-        })
-        .catch(() => {
-            return Promise.resolve(false);
-        });
+    try {
+        await fsPromises.access(dir, fs.constants.F_OK);
+        return true;
+    }
+    catch (e) {
+        return false;
+    }
 }
 
 export async function removeDirectory(dir:string):Promise<void>{
